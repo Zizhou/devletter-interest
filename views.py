@@ -25,7 +25,7 @@ def main_page(request):
     except:
         return HttpResponse('something went horribly wrong')
     try:
-        game = GamePoll.objects.exclude(game__in = user_profile.voted_on.all()).order_by('?')[0]
+        game = GamePoll.objects.exclude(game__in = user_profile.voted_on.all().values_list('game')).order_by('?')[0]
     except:
         return HttpResponse('you are probably done with all the games') 
 
