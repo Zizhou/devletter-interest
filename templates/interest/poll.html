@@ -3,17 +3,13 @@
 
 {% endblock %}
 {% block pagetitle %}
+Now testing!<br>
 Interest Poll for {{game}}
 {% endblock %}
 {% block body %}
 
 <form action = '{% url 'interest:main' %}' method = 'POST' name = interestform'>
 {% csrf_token %}
-
-<!--
-<input type = 'hidden' value = '{{poll_answer.user}}' id = 'id_user' name = 'user'>
-<input type = 'hidden' value = '{{poll_answer.game}}' id = 'id_game' name = 'game'>
--->
 
 {{poll_answer}}
 <input type = 'submit' value = 'Vote'>
