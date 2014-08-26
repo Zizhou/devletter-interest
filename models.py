@@ -1,6 +1,8 @@
 from django.db import models
 from submit.models import Game
 from django.contrib.auth.models import User
+from django import forms
+from django.forms import ModelForm
 
 from django.db.models.signals import post_save
 
@@ -16,8 +18,15 @@ class UserPollProfile(models.Model):
 
 class GamePoll(models.Model):
     game = models.OneToOneField(Game, unique = True)
+    
     def __unicode__(self):
         return self.game.name
+
+#define options for poll answers
+class PollOption(models.Model):
+    option = models.CharField(max_length = 100)
+    def __unicode__(self):
+        return self.option
 
 #individual answers linked to user profiles
 class PollAnswer(models.Model):
@@ -25,13 +34,20 @@ class PollAnswer(models.Model):
     answer = models.ForeignKey(PollOption)
     game = models.ForeignKey(GamePoll)
     def __unicode__(self):
-        return     
+        value = self.game.__unicode__() + self.user.__unicode__()
+        return  value
 
-#define options for poll answers
-class PollOption(models.Model):
-    option = models.CharField(max_length = 100)
-    def __unicode__(self):
-        return self.option
+###modelforms, because this time, I'll do it more correctly
+                                              #(yeah right)
+class PollAnswerForm(ModelForm):
+    class Meta:
+        model = PollAnswer
+#        fields = ['answer']
+        fields = '__all__'
+        widgets = {
+            'game' : forms.HiddenInput(),
+            'user' : forms.HiddenInput(),
+        }
 
 ###auto create models for users/games with signal magic
 
@@ -50,3 +66,11 @@ def gamepoll_create(sender, instance, created, **kwargs):
         g.save()
 
 post_save.connect(gamepoll_create, sender = Game)
+
+#auto-update userprofile poll list
+def userpoll_update(sender, instance, created, **kwargrs):
+    upp = instance.user
+    upp.voted_on.add(instance.game)
+    upp.save()
+
+post_save.connect(userpoll_update, sender = PollAnswer)
