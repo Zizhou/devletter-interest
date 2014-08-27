@@ -6,7 +6,7 @@ from interest.models import UserPollProfile, PollAnswerForm, GamePoll
 # Create your views here.
 
 @login_required
-def main_page(request):
+def poll(request):
     if request.method == 'POST':
     #TODO
         answer = PollAnswerForm(request.POST)
@@ -39,3 +39,12 @@ def main_page(request):
         
     }
     return render(request, 'interest/poll.html', context) 
+
+def result(request):
+    context = {
+    
+    }
+    return render(request, 'interest/result.html', context) 
+
+def main_page(request):
+    return render(request, 'interest/main.html')
