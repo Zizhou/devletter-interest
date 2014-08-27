@@ -25,13 +25,14 @@ class GamePoll(models.Model):
 #define options for poll answers
 class PollOption(models.Model):
     option = models.CharField(max_length = 100)
+    order = models.IntegerField(default = 0)
     def __unicode__(self):
         return self.option
 
 #individual answers linked to user profiles
 class PollAnswer(models.Model):
     user = models.ForeignKey(UserPollProfile)
-    answer = models.ForeignKey(PollOption)
+    answer = models.ForeignKey(PollOption, blank = False)
     game = models.ForeignKey(GamePoll)
     def __unicode__(self):
         value = self.game.__unicode__() + self.user.__unicode__()
@@ -40,14 +41,21 @@ class PollAnswer(models.Model):
 ###modelforms, because this time, I'll do it more correctly
                                               #(yeah right)
 class PollAnswerForm(ModelForm):
+
+    answer = forms.ModelChoiceField(queryset = PollOption.objects.all().order_by('order'), empty_label = None, widget = forms.RadioSelect)
     class Meta:
         model = PollAnswer
-#        fields = ['answer']
         fields = '__all__'
         widgets = {
+            #'answer' : forms.RadioSelect(),
             'game' : forms.HiddenInput(),
             'user' : forms.HiddenInput(),
         }
+    '''
+    def __init__(self, *args, **kwargs):
+        super(PollAnswerForm, self).__init__(*args, **kwargs)
+        self.fields['answer'].empty_label = None
+    '''
 
 ###auto create models for users/games with signal magic
 

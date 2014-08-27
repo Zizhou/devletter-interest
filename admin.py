@@ -11,7 +11,8 @@ class GamePollAdmin(admin.ModelAdmin):
     fields = ['game']
 
 class PollOptionAdmin(admin.ModelAdmin):
-    fields = ['option']
+    fields = ['option', 'order']
+    list_display = ('option', 'order')
 
 class PollAnswerAdmin(admin.ModelAdmin):
     fields = ['user', 'answer', 'game']

@@ -12,6 +12,7 @@ Interest Poll for {{game}}
 {% csrf_token %}
 
 {{poll_answer}}
+
 <input type = 'submit' value = 'Vote'>
 </form>
 <form action = '{% url 'interest:main' %}' method = 'GET'>
