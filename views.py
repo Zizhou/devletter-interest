@@ -17,7 +17,7 @@ def poll(request):
         print request.POST
         if answer.is_valid():
             answer.save() 
-            return HttpResponseRedirect('poll/')
+            return HttpResponseRedirect('/interest/poll/')
 
         else:
             return HttpResponse('you done goofed')
