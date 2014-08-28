@@ -2,7 +2,7 @@ from django.db import models
 from submit.models import Game
 from django.contrib.auth.models import User
 from django import forms
-from django.forms import ModelForm
+from django.forms import ModelForm, Form
 
 from django.db.models.signals import post_save
 
@@ -38,8 +38,8 @@ class PollAnswer(models.Model):
         value = self.game.__unicode__() + self.user.__unicode__()
         return  value
 
-###modelforms, because this time, I'll do it more correctly
-                                              #(yeah right)
+###proper forms, because this time, I'll do it more correctly
+                                                #(yeah right)
 class PollAnswerForm(ModelForm):
 
     answer = forms.ModelChoiceField(queryset = PollOption.objects.all().order_by('order'), empty_label = None, widget = forms.RadioSelect)
@@ -51,11 +51,10 @@ class PollAnswerForm(ModelForm):
             'game' : forms.HiddenInput(),
             'user' : forms.HiddenInput(),
         }
-    '''
-    def __init__(self, *args, **kwargs):
-        super(PollAnswerForm, self).__init__(*args, **kwargs)
-        self.fields['answer'].empty_label = None
-    '''
+
+class UserSelectForm(Form):
+    user_select = forms.ModelMultipleChoiceField(queryset = UserPollProfile.objects.all().order_by('user'))
+
 
 ###auto create models for users/games with signal magic
 

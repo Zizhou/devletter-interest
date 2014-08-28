@@ -3,10 +3,14 @@
 
 {% endblock %}
 {% block pagetitle %}
-
+SELECT * FROM user_profile WHERE poll_answer = yes
 {% endblock %}
 
 
 {% block body %}
-eeeeeeeeeeeeeeeeeeeeee
+<form action = '{% url 'interest:result' %}' method = 'POST'>
+{% csrf_token %}
+{{user_list}}
+<input type = 'submit' value = 'Get List'>
+</form>
 {% endblock %}
