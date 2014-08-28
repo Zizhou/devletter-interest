@@ -7,6 +7,8 @@ from interest.models import UserPollProfile, PollAnswerForm, GamePoll
 
 @login_required
 def poll(request):
+    print 'polling'
+    print request.method
     if request.method == 'POST':
     #TODO
         answer = PollAnswerForm(request.POST)
@@ -15,7 +17,8 @@ def poll(request):
         print request.POST
         if answer.is_valid():
             answer.save() 
-            return HttpResponseRedirect('/interest/')
+            return HttpResponseRedirect('poll/')
+
         else:
             return HttpResponse('you done goofed')
 
@@ -40,11 +43,13 @@ def poll(request):
     }
     return render(request, 'interest/poll.html', context) 
 
+@login_required
 def result(request):
     context = {
     
     }
     return render(request, 'interest/result.html', context) 
 
+@login_required
 def main_page(request):
     return render(request, 'interest/main.html')

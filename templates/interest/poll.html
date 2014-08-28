@@ -8,7 +8,7 @@ Interest Poll for {{game}}
 {% endblock %}
 {% block body %}
 
-<form action = '{% url 'interest:main' %}' method = 'POST' name = interestform'>
+<form action = '{% url 'interest:poll' %}' method = 'POST' name = interestform'>
 {% csrf_token %}
 
 {{poll_answer}}
