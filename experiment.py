@@ -15,5 +15,11 @@ def run_yes(input_list):
     result = set(user_list[0])
     for user in user_list:
         result = result.intersection(result, user)
+        print result
     #ah! I finally understand the double underscore here!
-    return GamePoll.objects.filter(game__in = result).order_by('game__name')
+    new_result = []
+    for num in result:
+        print num
+        new_result.append(num[0])
+    print new_result
+    return GamePoll.objects.filter(id__in = new_result).order_by('game__name')
