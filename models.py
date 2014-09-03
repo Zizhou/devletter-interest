@@ -53,7 +53,7 @@ class PollAnswerForm(ModelForm):
         }
 
 class UserSelectForm(Form):
-    user_select = forms.ModelMultipleChoiceField(queryset = UserPollProfile.objects.all().order_by('user'))
+    user_select = forms.ModelMultipleChoiceField(queryset = UserPollProfile.objects.all().order_by('user__username'))
 
 
 ###auto create models for users/games with signal magic
