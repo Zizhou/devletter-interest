@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 
 from interest.models import UserPollProfile, PollAnswerForm, GamePoll, UserSelectForm
+import interest.experiment
 # Create your views here.
 
 @login_required
@@ -42,20 +43,26 @@ def poll(request):
 
 @login_required
 def result(request):
+    user_list = UserSelectForm()
     if request.method == 'POST':
         selection = UserSelectForm(request.POST)
         if selection.is_valid():
             print selection.cleaned_data
             
-            #TODO: query goes here
-
+            user_select = selection.cleaned_data.get('user_select')
+            mutual_games = interest.experiment.run_yes(user_select)
+            print mutual_games
+            if mutual_games.count() == 0:
+                game_list = ['There is nothing that these people can agree upon. NOTHING.']
+            else:
+                game_list = mutual_games
             context = {
-            
+                'user_list': user_list,
+                'game_list': game_list,
             }
             return render(request, 'interest/result.html', context)
         else:
             return HttpResponse('what have you done')
-    user_list = UserSelectForm()
     context = {
         'user_list': user_list,
     }

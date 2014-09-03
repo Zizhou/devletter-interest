@@ -3,7 +3,7 @@
 
 {% endblock %}
 {% block pagetitle %}
-SELECT * FROM user_profile WHERE poll_answer = yes
+Mutual Interest Game Selector
 {% endblock %}
 
 
@@ -11,6 +11,10 @@ SELECT * FROM user_profile WHERE poll_answer = yes
 <form action = '{% url 'interest:result' %}' method = 'POST'>
 {% csrf_token %}
 {{user_list}}
+<br>
 <input type = 'submit' value = 'Get List'>
 </form>
+{% for game in game_list%}
+{{game}}<br>
+{% endfor %}
 {% endblock %}
