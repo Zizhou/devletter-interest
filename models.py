@@ -41,8 +41,8 @@ class PollAnswer(models.Model):
 ###proper forms, because this time, I'll do it more correctly
                                                 #(yeah right)
 class PollAnswerForm(ModelForm):
-
-    answer = forms.ModelChoiceField(queryset = PollOption.objects.all().order_by('order'), empty_label = None, widget = forms.RadioSelect)
+    #because this way of doing the initial value *totally* won't break anything
+    answer = forms.ModelChoiceField(queryset = PollOption.objects.all().order_by('order'), initial = 5, empty_label = None, widget = forms.RadioSelect)
     class Meta:
         model = PollAnswer
         fields = '__all__'
