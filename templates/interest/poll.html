@@ -1,5 +1,9 @@
 {% extends 'mybase.html' %}
 {% block head %}
+<style>
+div.box { background-color:#F7C6EA;float:left;margin:5px;padding:5px; }
+</style>
+
 <script>
 
 $(document).ready(function(){
@@ -13,7 +17,7 @@ Now testing!<br>
 Interest Poll for {{game}}
 {% endblock %}
 {% block body %}
-
+<div class = 'box'>
 <form action = '{% url 'interest:poll' %}' method = 'POST' name = interestform'>
 {% csrf_token %}
 
@@ -24,4 +28,12 @@ Interest Poll for {{game}}
 <form action = '{% url 'interest:poll' %}' method = 'GET'>
     <input type = 'submit' value = 'Skip for now'>
 </form>
+</div>
+<div class = 'box'>
+Developer: {{details.developer}}<br>
+URL:<br>{{details.url}}<br>{{details.developer.url}}<br>
+Notes:<br>{{details.notes}}<br>
+{{details.developer.notes}}
+</div>
+<div style = 'clear:both'></div>
 {% endblock %}

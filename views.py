@@ -29,14 +29,18 @@ def poll(request):
         game = GamePoll.objects.exclude(game__in = user_profile.voted_on.all().values_list('game')).order_by('?')[0]
     except:
         return HttpResponse('you are probably done with all the games') 
-
+    #initial data in hidden form
     info = {'game':game, 'user':user_profile}
+    #more info from db
+    print game.game
+    print type(game.game)
+    details = game.game
 
     poll_answer = PollAnswerForm(initial = info)
     context = {
         'game' : game,
         'poll_answer' : poll_answer,
-        
+        'details' : details,        
     }
     return render(request, 'interest/poll.html', context) 
 
