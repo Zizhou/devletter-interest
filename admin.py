@@ -16,7 +16,9 @@ class PollOptionAdmin(admin.ModelAdmin):
 
 class PollAnswerAdmin(admin.ModelAdmin):
     fields = ['user', 'answer', 'game']
-    
+
+    list_display = ['game', 'user']
+    list_filter = ['user']    
 admin.site.register(UserPollProfile, UserPollProfileAdmin)
 admin.site.register(GamePoll, GamePollAdmin)
 admin.site.register(PollOption, PollOptionAdmin)

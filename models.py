@@ -21,7 +21,8 @@ class GamePoll(models.Model):
     
     def __unicode__(self):
         return self.game.name
-
+    class Meta:
+        ordering = ['game'] 
 #define options for poll answers
 class PollOption(models.Model):
     option = models.CharField(max_length = 100)
@@ -37,7 +38,8 @@ class PollAnswer(models.Model):
     def __unicode__(self):
         value = self.game.__unicode__() + self.user.__unicode__()
         return  value
-
+    class Meta:
+        ordering = ['game__game'] 
 ###proper forms, because this time, I'll do it more correctly
                                                 #(yeah right)
 class PollAnswerForm(ModelForm):
