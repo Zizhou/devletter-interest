@@ -28,8 +28,8 @@ $(document).ready(function(){
 {% block body %}
 
 <div class = 'box' style = 'font-size:xx-large;height:800px;width:50%' id = 'choice_box'>
-        <b>{{game}}</b><br>
-    Developer: {{details.developer}}<br>
+        <b>{{game}}</b>{% if new %} *NEW 2015{%endif%}
+<br>    Developer: {{details.developer}}<br>
         <div style = 'margin:auto;width:90%;'>
             <form action = '{% url 'interest:poll2' %}' method = 'POST' id = 'no_form'>
                 {% csrf_token %}

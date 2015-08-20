@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 
 from interest.models import UserPollProfile, PollAnswerForm, GamePoll, UserSelectForm, PollAnswerForm2
 import interest.experiment
+
+import datetime
 # Create your views here.
 
 @login_required
@@ -36,9 +38,11 @@ def poll(request):
     print type(game.game)
     details = game.game
 
+    game_is_new = game.game.date_created.year >= datetime.datetime.now().year
     poll_answer = PollAnswerForm(initial = info)
     context = {
         'game' : game,
+        'new' : game_is_new,
         'poll_answer' : poll_answer,
         'details' : details,        
     }
@@ -75,9 +79,11 @@ def poll2(request):
 #seriously, though, should no be hardcoded 1/2 == yes/no
     poll_yes = PollAnswerForm2(initial = {'game':game, 'user':user_profile, 'answer' : 1})
     poll_no = PollAnswerForm2(initial = {'game':game, 'user':user_profile, 'answer' : 2})
-
+    game_is_new = game.game.date_created.year >= datetime.datetime.now().year
+    print game_is_new
     context = {
         'game' : game,
+        'new' : game_is_new,
         'details' : details,
         'poll_yes' : poll_yes,
         'poll_no' : poll_no,
