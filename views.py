@@ -38,7 +38,7 @@ def poll(request):
     print type(game.game)
     details = game.game
 
-    game_is_new = game.game.date_created >= datetime.datetime(2015, 6, 1, tzinfo = game.game.date_created.tzinfo)
+    game_is_new = game.game.date_created >= datetime.datetime(2015, 5, 10, tzinfo = game.game.date_created.tzinfo)
     poll_answer = PollAnswerForm(initial = info)
     context = {
         'game' : game,
@@ -79,7 +79,7 @@ def poll2(request):
 #seriously, though, should no be hardcoded 1/2 == yes/no
     poll_yes = PollAnswerForm2(initial = {'game':game, 'user':user_profile, 'answer' : 1})
     poll_no = PollAnswerForm2(initial = {'game':game, 'user':user_profile, 'answer' : 2})
-    game_is_new = game.game.date_created >= datetime.datetime(2015, 6, 1, tzinfo = game.game.date_created.tzinfo)
+    game_is_new = game.game.date_created >= datetime.datetime(2015, 5, 10, tzinfo = game.game.date_created.tzinfo)
     print game_is_new
     context = {
         'game' : game,
