@@ -53,6 +53,18 @@ class PollAnswerForm(ModelForm):
             'game' : forms.HiddenInput(),
             'user' : forms.HiddenInput(),
         }
+#it's a no-form form!
+class PollAnswerForm2(ModelForm):
+    class Meta:
+        model = PollAnswer
+        fields = '__all__'
+        widgets = {
+            #I have some regrets about how I made this entire model
+            'game' : forms.HiddenInput(),
+            'user' : forms.HiddenInput(),
+            'answer' : forms.HiddenInput(),        
+        }
+
 
 class UserSelectForm(Form):
     user_select = forms.ModelMultipleChoiceField(queryset = UserPollProfile.objects.all().order_by('user__username'))

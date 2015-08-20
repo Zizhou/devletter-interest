@@ -1,0 +1,50 @@
+{% extends 'mybase.html' %}
+{% block head %}
+{% load staticfiles %}
+<link rel='stylesheet' type='text/css' href="{% static 'interest/style.css' %}"/>
+<script type="text/javascript" src="{% static 'interest/jquery.mobile-events.min.js' %}"></script>
+
+<script>
+function form_submit(form_id){
+    $(form_id).submit();
+    console.log("tried to " + form_id);
+}
+
+$(document).ready(function(){
+    $('#choice_box').on('swipeleft', function(){
+        form_submit('#no_form');
+        console.log('swiped left!');
+    });
+    $('#choice_box').on('swiperight', function(){
+        form_submit('#yes_form');
+        console.log('swiped right!');
+    });
+});
+
+</script>
+{% endblock %}
+{% block pagetitle %}
+{% endblock %}
+{% block body %}
+
+<div class = 'box' style = 'font-size:xx-large;height:800px;width:50%' id = 'choice_box'>
+        <b>{{game}}</b><br>
+    Developer: {{details.developer}}<br>
+        <div style = 'margin:auto;width:90%;'>
+            <form action = '{% url 'interest:poll2' %}' method = 'POST' id = 'no_form'>
+                {% csrf_token %}
+                <div class = 'choice' id = 'choice_no' onclick = 'form_submit("#no_form")'>
+                    no {{poll_no}}
+                </div>
+            </form>
+            <form action = '{% url 'interest:poll2' %}' method = 'POST' id = 'yes_form'>
+                 {% csrf_token %}
+                 <div class = 'choice' id = 'choice_yes' onclick = 'form_submit("#yes_form")'>
+                    yes {{poll_yes}}
+                </div>
+            </form>
+        </div>
+    </form>
+</div>
+<div style = 'clear:both'></div>
+{% endblock %}
