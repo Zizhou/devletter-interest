@@ -52,14 +52,13 @@ def poll(request):
 def poll2(request):
     if request.method == 'POST':
         answer = PollAnswerForm2(request.POST)
-        #I am never doing multiple models in a form again if I can help it
-        #this is soooooo much nicer
         if answer.is_valid():
             answer.save() 
             return HttpResponseRedirect('/interest/poll2/')
 
         else:
             return HttpResponse('you done goofed')
+    #not only is this super insecure, it's totally unnecessary
     try:
         user_profile = UserPollProfile.objects.get(user_id = request.user.id)
     except:

@@ -15,6 +15,29 @@ Mutual Interest Game Selector
 <input type = 'submit' value = 'Get List'>
 </form>
 {% for game in game_list%}
-{{game}}<br>
+
+{{game}}
+<b>
+{% if game.game.owned_pc %}
+(PC)
+{% endif %}
+{% if game.owned_360 %}
+(360)
+{% endif %}
+{% if game.owned_xb1 %}
+(XB1)
+{% endif %}
+{% if game.owned_ps3 %}
+(PS3)
+{% endif %}
+{% if game.owned_ps4 %}
+(PS4)
+{% endif %}
+{% if game.owned_other %}
+(Other)
+{% endif %}
+</b>
+
+<br>
 {% endfor %}
 {% endblock %}
