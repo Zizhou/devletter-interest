@@ -1,0 +1,40 @@
+{% extends 'mybase.html' %}
+{% block pagetitle %}
+Bulk Ownership(use caution)
+{% endblock %}
+{% block head %}
+{% endblock %}
+{% block body %}
+{% if message %}
+There were potential problems saving changes to:
+{% for x in error %}
+{{x}}<br>
+{% endfor %}
+{% endif %}
+<form action = {% url 'interest:bulk' %} method = 'POST' >
+{% csrf_token %}
+<table>
+{% for x in forms %}
+<tr>
+    <td>{{x.name}}
+    </td>
+    <td>
+    {% for radio in x.form.answer %}
+        {{radio}}
+    {% endfor %}
+    {{x.form.user}}
+    {{x.form.game}}
+    </td>
+<tr>
+
+{% endfor %}
+</table>
+<input type = 'submit' value = 'Update!'>
+</form>
+<div class = 'button'>
+<a class = 'fill' href ={% url 'interest:main'%}>
+Back
+</a>
+</div>
+<div style = 'clear:both'></div>
+{% endblock %}

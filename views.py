@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 
-from interest.models import UserPollProfile, PollAnswerForm, GamePoll, UserSelectForm, PollAnswerForm2
+from interest.models import PollAnswer, PollOption, UserPollProfile, PollAnswerForm, GamePoll, UserSelectForm, PollAnswerForm2, PollAnswerFormBulk
 import interest.experiment
 
 import datetime
@@ -88,6 +88,44 @@ def poll2(request):
         'poll_no' : poll_no,
     }
     return render(request, 'interest/poll2.html', context) 
+
+@login_required
+def bulk(request):
+    error = []
+    user_profile = UserPollProfile.objects.get(user_id = request.user.id)
+    if request.method =='POST':
+        user_profile.voted_on.clear()
+        for x in PollAnswer.objects.filter(user = user_profile):
+            x.delete()
+        for x in GamePoll.objects.all():
+            form = PollAnswerFormBulk(request.POST, prefix = x)
+            if form.is_valid():
+                try:
+                    form.save()
+                except:
+                    try:
+                        error.append(x.developer.name.decode('utf-8'))
+                    except:
+                        error.append(unicode(x.id)+'this one\'s funny...')
+
+    form = []
+    for x in GamePoll.objects.all():
+        this_answer = PollAnswer(answer = PollOption.objects.get(option = 'No'))
+        answered = PollAnswer.objects.filter(user = user_profile.id, game = x)
+        if answered.count() > 0:
+            this_answer = answered[0]
+
+        info = {
+                'user' : user_profile.id,
+                'game' : x.id,
+        }
+        form.append({'name' : x.game.name, 'form':PollAnswerFormBulk(instance = this_answer, initial = info, prefix = x)})
+
+    context = {
+        'forms' : form,
+        'error': error,
+    }
+    return render(request, 'interest/bulk.html', context)
 
 @login_required
 def result(request):

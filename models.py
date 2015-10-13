@@ -70,6 +70,17 @@ class UserSelectForm(Form):
     user_select = forms.ModelMultipleChoiceField(queryset = UserPollProfile.objects.all().order_by('user__username'))
 
 
+class PollAnswerFormBulk(ModelForm):
+    answer = forms.ModelChoiceField(queryset = PollOption.objects.all().order_by('order'), initial = 5, empty_label = None, widget = forms.RadioSelect)
+    class Meta:
+        model = PollAnswer
+        fields = '__all__'
+        widgets = {
+            #'answer' : forms.RadioSelect(),
+            'game' : forms.HiddenInput(),
+            'user' : forms.HiddenInput(),
+        }
+
 ###auto create models for users/games with signal magic
 
 def userpoll_create(sender, instance, created, **kwargs):
